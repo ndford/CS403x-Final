@@ -1,5 +1,7 @@
 package com.davidmihal.geoimagestore;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 /**
@@ -12,6 +14,8 @@ public class GeoPhoto {
     private double latitude;
     private double longitude;
     private String fileKey;
+
+    private Bitmap image;
 
     public String getName() {
         return name;
@@ -59,5 +63,13 @@ public class GeoPhoto {
 
     public void setFileKey(String fileKey) {
         this.fileKey = fileKey;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }
