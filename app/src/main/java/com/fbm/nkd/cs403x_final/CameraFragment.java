@@ -1,11 +1,13 @@
 package com.fbm.nkd.cs403x_final;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -16,22 +18,24 @@ public class CameraFragment extends Fragment {
 
     private int mPage;
 
-
+    int REQUEST_CODE = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     // Inflate the fragment layout we defined above for this fragment
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-        tvTitle.setText("Camera Fragment");
+        View view = inflater.inflate(R.layout.fragment_camera, container, false);
         return view;
+    }
+
+    public void takePicture(View view){
+        Intent intent = new Intent(getActivity(), CallCamera.class);
+        getActivity().startActivity(intent);
     }
 
 }
