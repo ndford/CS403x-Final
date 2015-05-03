@@ -41,5 +41,6 @@
             android:value="AIzaSyCn8RubqUb0_2x19ob_0gpgHZ69ReQHXsA"/>
 
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

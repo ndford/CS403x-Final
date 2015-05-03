@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.davidmihal.geoimagestore.GeoPhoto;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -89,9 +91,16 @@ public class CallCamera extends Activity {
         File imageFile = new File(photoUri.getPath());
         if (imageFile.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            storePhoto(bitmap);
             BitmapDrawable drawable = new BitmapDrawable(this.getResources(), bitmap);
             photoImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
             photoImage.setImageDrawable(drawable);
         }
+    }
+
+    private void storePhoto(Bitmap bitmap) {
+        GeoPhoto photo = new GeoPhoto();
+        photo.setImage(bitmap);
+        new UploadPhotoTask().execute(photo);
     }
 }
