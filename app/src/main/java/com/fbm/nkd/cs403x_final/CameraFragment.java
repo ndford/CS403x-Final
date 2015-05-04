@@ -4,6 +4,7 @@ package com.fbm.nkd.cs403x_final;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,33 +51,34 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
-        photoImage = (ImageView) view.findViewById(R.id.photoImage);
+
         xImage = (ImageView) view.findViewById(R.id.trashPhotoButton);
         xImage.setVisibility(View.GONE);
         xImage.setOnClickListener(new View.OnClickListener() {
             //photoImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = getOutputPhotoFile();
-                fileUri = Uri.fromFile(getOutputPhotoFile());
-                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
+                takePhoto();
             }
         });
+
+        photoImage = (ImageView) view.findViewById(R.id.photoImage);
         photoImage.setOnClickListener(new View.OnClickListener() {
-        //photoImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = getOutputPhotoFile();
-            fileUri = Uri.fromFile(getOutputPhotoFile());
-            i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
+                takePhoto();
             }
         });
 
         return view;
     }
 
+
+    private void takePhoto() {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getOutputPhotoFile();
+        fileUri = Uri.fromFile(getOutputPhotoFile());
+        i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
+    }
 
     protected File getOutputPhotoFile() {
         File directory = new File(Environment.getExternalStoragePublicDirectory(
@@ -123,7 +125,7 @@ public class CameraFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             storePhoto(bitmap);
             BitmapDrawable drawable = new BitmapDrawable(this.getResources(), bitmap);
-            photoImage.setScaleType(ImageView.ScaleType.FIT_XY);
+            photoImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             photoImage.setImageDrawable(drawable);
         }
     }

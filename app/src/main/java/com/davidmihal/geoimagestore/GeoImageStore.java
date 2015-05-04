@@ -1,18 +1,27 @@
 package com.davidmihal.geoimagestore;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
-import java.io.BufferedReader;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * Created by David Mihal on 4/30/2015.
  */
 public class GeoImageStore {
     private static final String BASE_URL = "http://geoimagestore.appspot.com/";
+    private static final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpeg");
+
+    private final OkHttpClient client = new OkHttpClient();
 
     private static GeoImageStore instance = null;
 
@@ -26,39 +35,57 @@ public class GeoImageStore {
     }
     public void addPhoto(GeoPhoto photo)
     {
-        URL uploadUrl = getUploadUrl();
-        //TODO: Upload the photo
+        String uploadUrl = getUploadUrl();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.getImage().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] img = stream.toByteArray();
+
+        try {
+            RequestBody requestBody = new MultipartBuilder()
+                    .type(MultipartBuilder.FORM)
+                    .addPart(
+                            Headers.of("Content-Disposition", "form-data; name=\"title\""),
+                            RequestBody.create(null, photo.getName()))
+                    .addPart(
+                            Headers.of("Content-Disposition", "form-data; name=\"lat\""),
+                            RequestBody.create(null, Double.toString(photo.getLatitude())))
+                    .addPart(
+                            Headers.of("Content-Disposition", "form-data; name=\"lng\""),
+                            RequestBody.create(null, Double.toString(photo.getLongitude())))
+                    .addPart(
+                            Headers.of("Content-Disposition", "form-data; name=\"file\"; filename=\"upload.jpg\""),
+                            RequestBody.create(MEDIA_TYPE_JPG, img))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(uploadUrl)
+                    .post(requestBody)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            Log.d("GeoImageStore", response.body().string());
+
+        } catch (Exception  e) {
+            e.printStackTrace();
+        }
     }
-    private URL getUploadUrl()
+    private String getUploadUrl()
     {
         try {
-            HttpURLConnection httpUrlConnection = null;
-            URL url = new URL(BASE_URL + "upload_url");
-            httpUrlConnection = (HttpURLConnection) url.openConnection();
-            httpUrlConnection.setUseCaches(false);
-            httpUrlConnection.setDoOutput(true);
+            Request request = new Request.Builder()
+                    .url(BASE_URL + "upload_url")
+                    .build();
 
-            httpUrlConnection.setRequestMethod("GET");
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            String response = getResponse(httpUrlConnection);
-            httpUrlConnection.disconnect();
-            URL uploadURL = new URL(response);
-            return uploadURL;
-        } catch (Exception  e) {
+            return response.body().string();
+        } catch (Exception e){
             e.printStackTrace();
             return null;
         }
-    }
-
-    private String getResponse(HttpURLConnection conn) throws IOException {
-        StringBuilder response  = new StringBuilder();
-
-        BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String strLine = null;
-        while ((strLine = input.readLine()) != null) {
-            response.append(strLine);
-        }
-        input.close();
-        return response.toString();
     }
 }
