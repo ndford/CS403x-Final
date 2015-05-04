@@ -33,13 +33,12 @@ public class GeoPhoto {
         try {
             photo.setDate(fromISODateString(obj.getString("Date")));
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
-
         return photo;
     }
 
-    private static String FORMAT_DATE_ISO = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ";
+    private static String FORMAT_DATE_ISO = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ";
 
     private static Date fromISODateString(String isoDateString) throws Exception {
         isoDateString = isoDateString.replaceFirst("(.*):(..)", "$1$2");
