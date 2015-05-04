@@ -25,6 +25,7 @@ import java.util.List;
 public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto>> {
 
     FeedFragment feed;
+    String IMG_URL = "http://geoimagestore.appspot.com/serve/?blobKey=";
     private Location myLocation;
 
     public GetNearbyPhotosTask(FeedFragment feedFragment) {
@@ -37,14 +38,17 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
             myLocation = location[0];
             List<GeoPhoto> photos = GeoImageStore.getInstance().getNearbyPhotos(myLocation);
             for (GeoPhoto geoPhoto : photos){
+                if(geoPhoto.getFileKey().equals("")){
+                    photos.remove(geoPhoto);
+                    continue;
+                }
                 Bitmap bitmapPhoto = null;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 2;
                 try {
                     bitmapPhoto = BitmapFactory.decodeStream(
-                            (InputStream) new URL("http://geoimagestore.appspot.com/serve/?blobKey="+geoPhoto.getFileKey()).getContent(),
-                            null,
-                            options);
+                            (InputStream) new URL(IMG_URL+geoPhoto.getFileKey()).getContent(),
+                            null, options);
                 } catch (MalformedURLException url_e){
                     Log.e("PHOTO_URL_ERROR", url_e.getMessage());
                     continue;
