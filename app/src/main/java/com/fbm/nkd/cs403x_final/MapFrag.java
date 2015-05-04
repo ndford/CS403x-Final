@@ -107,7 +107,7 @@ public class MapFrag extends Fragment {
                         Bitmap icon = Bitmap.createScaledBitmap(bitmapPhoto, 200, 200, false);
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
-                                .title("MyImage")
+                                .title(geophoto.getName())
                                 .icon(BitmapDescriptorFactory.fromBitmap(icon)));
 
                     }
