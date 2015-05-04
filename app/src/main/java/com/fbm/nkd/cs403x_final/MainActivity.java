@@ -42,6 +42,7 @@ public class MainActivity extends FragmentActivity {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQ = 0;
     private static final String TAG = "CallCamera";
+    public static FragmentManager fragmentManager;
     Uri fileUri = null;
     ImageView photoImage = null;
 
@@ -49,10 +50,10 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        fragmentManager = getSupportFragmentManager();
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new SectionsPagerAdapter(fragmentManager));
 
         // Give the PagerSlidingTabStrip the ViewPager
         PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);

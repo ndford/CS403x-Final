@@ -52,12 +52,13 @@ public class CameraFragment extends Fragment {
         photoImage = (ImageView) view.findViewById(R.id.photoImage);
         Button callCameraButton = (Button) view.findViewById(R.id.takePhotoButton);
         callCameraButton.setOnClickListener(new View.OnClickListener() {
+        //photoImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = getOutputPhotoFile();
-                fileUri = Uri.fromFile(getOutputPhotoFile());
-                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
+            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getOutputPhotoFile();
+            fileUri = Uri.fromFile(getOutputPhotoFile());
+            i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
             }
         });
 
