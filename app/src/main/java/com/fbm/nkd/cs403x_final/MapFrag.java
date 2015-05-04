@@ -71,6 +71,7 @@ public class MapFrag extends Fragment {
 
     /***** Sets up the map if it is possible to do so *****/
     public void setUpMapIfNeeded() {
+        Log.d("SET_UP_MAP_IF_NEEDED", "Arriving...");
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
@@ -109,8 +110,9 @@ public class MapFrag extends Fragment {
                                 .position(latLng)
                                 .title(geophoto.getName())
                                 .icon(BitmapDescriptorFactory.fromBitmap(icon)));
-
+                        Log.d("SET_UP_MAP_IF_NEEDED", "Got one photo.");
                     }
+                    Log.d("SET_UP_MAP_IF_NEEDED", "Exiting...");
                 }
             }
 
