@@ -44,8 +44,6 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
         if (geoPhotos != null) {
             int childIndex = 0;
             LinearLayout listlayout = (LinearLayout) feed.getView().findViewById(R.id.feedListLayout);
-            Log.d("DEBUG", "got the photos!");
-            System.out.println("GOT THE PHOTOS");
             for (GeoPhoto geophoto : geoPhotos) {
                 Bitmap bitmapPhoto = null;
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -62,7 +60,6 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
                     Log.e("PHOTO_URL_ERROR", io_e.getMessage());
                     continue;
                 }
-                Log.d("DEBUG", "GOT A PHOTO!!!!!!");
                 listlayout.addView(feed.getActivity().getLayoutInflater().inflate(R.layout.feeditem, feed.getViewgroup(), false), childIndex);
                 View feedItem = listlayout.getChildAt(childIndex);
                 ((ImageView) feedItem.findViewById(R.id.feedItemImage)).setImageBitmap(bitmapPhoto);
