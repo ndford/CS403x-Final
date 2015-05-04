@@ -27,6 +27,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.06"
         android:gravity="center_horizontal"
+        android:focusable="false"
         android:hint="Say something about your photo!"/>
 
     <Button
