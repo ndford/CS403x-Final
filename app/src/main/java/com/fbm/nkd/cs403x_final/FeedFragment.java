@@ -20,6 +20,7 @@ public class FeedFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
+    private GetNearbyPhotosTask task = new GetNearbyPhotosTask();
 
 
 
@@ -35,6 +36,12 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        task.execute();
     }
 
     private Location getMyLocation() {
