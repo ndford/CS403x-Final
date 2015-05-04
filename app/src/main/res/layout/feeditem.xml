@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="276dp"
         android:layout_height="277dp"
-        android:id="@+id/imageView"
+        android:id="@+id/feedItemImage"
         android:src="@drawable/ic_launcher"
         android:layout_gravity="center_horizontal" />
 
