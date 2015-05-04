@@ -38,6 +38,22 @@ public class GeoPhoto {
         return photo;
     }
 
+    public double getDistance(Location loc){
+        return getDistance(loc.getLatitude(), loc.getLongitude());
+    }
+    public double getDistance(double lat, double lng) {
+        final double earthRadius = 3959; //miles
+        double dLat = Math.toRadians(lat-latitude);
+        double dLng = Math.toRadians(lng-longitude);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(latitude)) * Math.cos(Math.toRadians(lat)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = (earthRadius * c);
+
+        return dist;
+    }
+
     private static String FORMAT_DATE_ISO = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ";
 
     private static Date fromISODateString(String isoDateString) throws Exception {
