@@ -75,25 +75,6 @@ public class MapFrag extends Fragment {
                 longitude), 16.0f));
     }
 
-
-
-    @Override
-    public void onResume() {
-        // TODO Auto-generated method stub
-
-        super.onResume();
-        if (mMap != null)
-            setUpMap();
-
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.location_map)).getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null)
-                setUpMap();
-        }
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -115,15 +96,7 @@ public class MapFrag extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-/*
-        if (mMap != null
-                &&
-                getChildFragmentManager().findFragmentById(R.id.location_map) != null) {
 
-            getChildFragmentManager().beginTransaction().remove(getChildFragmentManager().findFragmentById(R.id.location_map));
-            mMap = null;
-        }
-        */
 
         if (mMap != null) {
             MainActivity.fragmentManager.beginTransaction()
