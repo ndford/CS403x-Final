@@ -1,5 +1,6 @@
 package com.fbm.nkd.cs403x_final;
 
+import android.location.Location;
 import android.os.AsyncTask;
 
 import com.davidmihal.geoimagestore.GeoImageStore;
@@ -10,15 +11,21 @@ import java.util.List;
 /**
  * Created by David Mihal on 5/3/2015.
  */
-public class GetNearbyPhotosTask extends AsyncTask<Void, Void, List<GeoPhoto>> {
+public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto>> {
     @Override
-    protected List<GeoPhoto> doInBackground(Void... voids) {
-        return GeoImageStore.getInstance().getNearbyPhotos();
+    protected List<GeoPhoto> doInBackground(Location... location) {
+        if (location[0] != null) {
+            return GeoImageStore.getInstance().getNearbyPhotos(location[0]);
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected void onPostExecute(List<GeoPhoto> geoPhotos) {
         //Todo: do something with photos
-        geoPhotos.hashCode();
+        if (geoPhotos != null){
+            geoPhotos.hashCode();
+        }
     }
 }

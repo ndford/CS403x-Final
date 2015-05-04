@@ -1,6 +1,7 @@
 package com.davidmihal.geoimagestore;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.util.Log;
 
 import com.squareup.okhttp.Headers;
@@ -77,14 +78,17 @@ public class GeoImageStore {
             e.printStackTrace();
         }
     }
-    public List<GeoPhoto> getNearbyPhotos()
+    public List<GeoPhoto> getNearbyPhotos(Location location)
     {
         List<GeoPhoto> photos = new ArrayList<GeoPhoto>();
+
+        String url = BASE_URL + "nearby?lat=" + location.getLatitude() +
+                "&lng=" + location.getLongitude();
 
         JSONArray json;
         try {
             Request request = new Request.Builder()
-                    .url(BASE_URL + "nearby?lat=&lng=")
+                    .url(url)
                     .build();
             Response response = client.newCall(request).execute();
 

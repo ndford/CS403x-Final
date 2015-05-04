@@ -41,7 +41,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        task.execute();
+        task.execute(getMyLocation());
     }
 
     private Location getMyLocation() {
