@@ -2,21 +2,39 @@
 <!-- This is the fragment  to be displayed for a section associated with a tab -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Photo"
-        android:id="@+id/takePhotoButton"
-        android:layout_gravity="center_horizontal"
-        android:onClick="takePicture"/>
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:id="@+id/cameralayout">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="45dp"
+        android:id="@+id/trashPhotoButton"
+        android:src="@drawable/grey_x" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="285dp"
         android:id="@+id/photoImage"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/camera_icon"
+        android:layout_weight="0.16" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/photoCaption"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.06"
+        android:gravity="center_horizontal"
+        android:hint="Say something about your photo!"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post it!"
+        android:id="@+id/button"
+        android:layout_weight="0.11"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

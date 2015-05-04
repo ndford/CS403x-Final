@@ -15,13 +15,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     static CameraFragment cameraFragment;
     static FeedFragment feedFragment;
-    static MapFragment mapFragment;
+    static MapFrag mapFragment;
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
         cameraFragment = new CameraFragment();
         feedFragment = new FeedFragment();
-        mapFragment = new MapFragment();
+        mapFragment = new MapFrag();
     }
 
     @Override
