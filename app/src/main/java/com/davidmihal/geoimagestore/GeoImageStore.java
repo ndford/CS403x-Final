@@ -11,8 +11,13 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by David Mihal on 4/30/2015.
@@ -71,6 +76,30 @@ public class GeoImageStore {
         } catch (Exception  e) {
             e.printStackTrace();
         }
+    }
+    public List<GeoPhoto> getNearbyPhotos()
+    {
+        List<GeoPhoto> photos = new ArrayList<GeoPhoto>();
+
+        JSONArray json;
+        try {
+            Request request = new Request.Builder()
+                    .url(BASE_URL + "nearby?lat=&lng=")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            json = new JSONArray(response.body().string());
+            for (int i=0; i < json.length(); i++){
+                JSONObject obj = json.getJSONObject(i);
+                GeoPhoto photo = GeoPhoto.fromJSON(obj);
+                photos.add(photo);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return photos;
     }
     private String getUploadUrl()
     {
