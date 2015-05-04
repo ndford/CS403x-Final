@@ -62,7 +62,9 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
                 }
                 listlayout.addView(feed.getActivity().getLayoutInflater().inflate(R.layout.feeditem, feed.getViewgroup(), false), childIndex);
                 View feedItem = listlayout.getChildAt(childIndex);
-                ((ImageView) feedItem.findViewById(R.id.feedItemImage)).setImageBitmap(bitmapPhoto);
+                ImageView itemImage = (ImageView) feedItem.findViewById(R.id.feedItemImage);
+                itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                itemImage.setImageBitmap(bitmapPhoto);
                 ((TextView) feedItem.findViewById(R.id.imageTextView)).setText(geophoto.getName());
 
                 childIndex++;
