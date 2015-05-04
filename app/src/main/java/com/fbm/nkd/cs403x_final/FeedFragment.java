@@ -20,9 +20,6 @@ public class FeedFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
-    private GetNearbyPhotosTask task = new GetNearbyPhotosTask();
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +38,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        task.execute(getMyLocation());
+        new GetNearbyPhotosTask().execute(getMyLocation());
     }
 
     private Location getMyLocation() {
