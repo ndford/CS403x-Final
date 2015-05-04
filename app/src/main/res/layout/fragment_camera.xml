@@ -17,7 +17,7 @@
         android:layout_height="285dp"
         android:id="@+id/photoImage"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/cameria_icon"
+        android:src="@drawable/camera_icon"
         android:layout_weight="0.16" />
 
     <EditText
