@@ -6,29 +6,35 @@
     android:weightSum="1"
     android:id="@+id/cameralayout">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Photo"
-        android:id="@+id/takePhotoButton"
-        android:layout_gravity="center_horizontal"
-        />
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="45dp"
+        android:id="@+id/trashPhotoButton"
+        android:src="@drawable/grey_x" />
 
     <ImageView
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="285dp"
         android:id="@+id/photoImage"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_launcher"
-        android:layout_weight="0.79"
-       />
+        android:src="@drawable/cameria_icon"
+        android:layout_weight="0.16" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/caption"
+        android:id="@+id/photoCaption"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.06" />
+        android:layout_weight="0.06"
+        android:text="Say something about your photo!"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post it!"
+        android:id="@+id/button"
+        android:layout_weight="0.11"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

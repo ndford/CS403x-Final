@@ -38,6 +38,7 @@ public class CameraFragment extends Fragment {
     private static final String TAG = "CallCamera";
     Uri fileUri = null;
     ImageView photoImage = null;
+    ImageView xImage = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,19 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         photoImage = (ImageView) view.findViewById(R.id.photoImage);
-        Button callCameraButton = (Button) view.findViewById(R.id.takePhotoButton);
-        callCameraButton.setOnClickListener(new View.OnClickListener() {
+        xImage = (ImageView) view.findViewById(R.id.trashPhotoButton);
+        xImage.setVisibility(View.GONE);
+        xImage.setOnClickListener(new View.OnClickListener() {
+            //photoImage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = getOutputPhotoFile();
+                fileUri = Uri.fromFile(getOutputPhotoFile());
+                i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQ );
+            }
+        });
+        photoImage.setOnClickListener(new View.OnClickListener() {
         //photoImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -105,6 +117,7 @@ public class CameraFragment extends Fragment {
     }
 
     protected void showPhoto(Uri photoUri) {
+        getView().findViewById(R.id.trashPhotoButton).setVisibility(View.VISIBLE);
         File imageFile = new File(photoUri.getPath());
         if (imageFile.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
