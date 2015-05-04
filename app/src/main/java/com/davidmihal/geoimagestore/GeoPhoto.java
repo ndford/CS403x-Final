@@ -1,6 +1,7 @@
 package com.davidmihal.geoimagestore;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,5 +103,12 @@ public class GeoPhoto {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public void setLocation(Location location) {
+        if (location != null){
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
     }
 }

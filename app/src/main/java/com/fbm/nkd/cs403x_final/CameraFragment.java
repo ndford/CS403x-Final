@@ -1,11 +1,15 @@
 package com.fbm.nkd.cs403x_final;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -132,9 +136,27 @@ public class CameraFragment extends Fragment {
 
     private void storePhoto(Bitmap bitmap) {
         GeoPhoto photo = new GeoPhoto();
+        photo.setLocation(getMyLocation());
         photo.setImage(bitmap);
         new UploadPhotoTask().execute(photo);
     }
 
+    private Location getMyLocation() {
+        // Get location from GPS if it's available
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Location wasn't found, check the next most accurate place for the current location
+        if (myLocation == null) {
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            // Finds a provider that matches the criteria
+            String provider = lm.getBestProvider(criteria, true);
+            // Use the provider to get the last known location
+            myLocation = lm.getLastKnownLocation(provider);
+        }
+
+        return myLocation;
+    }
 
 }
