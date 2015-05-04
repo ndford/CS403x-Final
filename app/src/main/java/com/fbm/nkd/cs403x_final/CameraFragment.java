@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -20,8 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.davidmihal.geoimagestore.GeoPhoto;
@@ -44,6 +43,9 @@ public class CameraFragment extends Fragment {
     Uri fileUri = null;
     ImageView photoImage = null;
     ImageView xImage = null;
+    private Button postBtn;
+    private Bitmap currentPhoto;
+    private EditText caption;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class CameraFragment extends Fragment {
         xImage.setOnClickListener(new View.OnClickListener() {
             //photoImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                takePhoto();
+                clearPreview();
             }
         });
 
@@ -71,6 +73,16 @@ public class CameraFragment extends Fragment {
                 takePhoto();
             }
         });
+
+        postBtn = (Button) view.findViewById(R.id.postBtn);
+        postBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storePhoto();
+            }
+        });
+
+        caption = (EditText)view.findViewById(R.id.photoCaption);
 
         return view;
     }
@@ -126,19 +138,37 @@ public class CameraFragment extends Fragment {
         getView().findViewById(R.id.trashPhotoButton).setVisibility(View.VISIBLE);
         File imageFile = new File(photoUri.getPath());
         if (imageFile.exists()){
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            storePhoto(bitmap);
-            BitmapDrawable drawable = new BitmapDrawable(this.getResources(), bitmap);
+            currentPhoto = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            BitmapDrawable drawable = new BitmapDrawable(this.getResources(), currentPhoto);
             photoImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             photoImage.setImageDrawable(drawable);
+            xImage.setVisibility(View.VISIBLE);
+            postBtn.setEnabled(true);
         }
     }
 
-    private void storePhoto(Bitmap bitmap) {
-        GeoPhoto photo = new GeoPhoto();
-        photo.setLocation(getMyLocation());
-        photo.setImage(bitmap);
-        new UploadPhotoTask().execute(photo);
+    private void storePhoto() {
+        if (currentPhoto != null) {
+            GeoPhoto photo = new GeoPhoto();
+            photo.setLocation(getMyLocation());
+            String capt = caption.getText().toString();
+            if (capt.length() > 0){
+                photo.setName(capt);
+            }
+            photo.setImage(currentPhoto);
+            new UploadPhotoTask().execute(photo);
+
+            clearPreview();
+        }
+    }
+
+    private void clearPreview() {
+        currentPhoto = null;
+        caption.setText("");
+        int id = getResources().getIdentifier("camera_icon", "drawable", getActivity().getPackageName());
+        photoImage.setImageResource(id);
+        xImage.setVisibility(View.GONE);
+        postBtn.setEnabled(false);
     }
 
     private Location getMyLocation() {
