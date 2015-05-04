@@ -18,7 +18,7 @@ public class GeoPhoto {
     private Bitmap image;
 
     public String getName() {
-        return name;
+        return name != null ? name : "Untitled";
     }
 
     public void setName(String name) {
