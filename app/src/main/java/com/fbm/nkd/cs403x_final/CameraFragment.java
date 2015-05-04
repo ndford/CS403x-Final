@@ -144,6 +144,8 @@ public class CameraFragment extends Fragment {
             photoImage.setImageDrawable(drawable);
             xImage.setVisibility(View.VISIBLE);
             postBtn.setEnabled(true);
+            caption.setFocusableInTouchMode(true);
+            caption.setFocusable(true);
         }
     }
 
@@ -165,6 +167,8 @@ public class CameraFragment extends Fragment {
     private void clearPreview() {
         currentPhoto = null;
         caption.setText("");
+        caption.setFocusable(false);
+        caption.setFocusableInTouchMode(false);
         int id = getResources().getIdentifier("camera_icon", "drawable", getActivity().getPackageName());
         photoImage.setImageResource(id);
         xImage.setVisibility(View.GONE);
