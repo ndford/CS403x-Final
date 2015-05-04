@@ -1,6 +1,7 @@
 package com.fbm.nkd.cs403x_final;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,6 +13,10 @@ import android.widget.TextView;
 import com.davidmihal.geoimagestore.GeoImageStore;
 import com.davidmihal.geoimagestore.GeoPhoto;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -42,7 +47,21 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
             Log.d("DEBUG", "got the photos!");
             System.out.println("GOT THE PHOTOS");
             for (GeoPhoto geophoto : geoPhotos) {
-                Bitmap bitmapPhoto = geophoto.getImage();
+                Bitmap bitmapPhoto = null;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                try {
+                    bitmapPhoto = BitmapFactory.decodeStream(
+                            (InputStream) new URL("http://geoimagestore.appspot.com/serve/?blobKey="+geophoto.getFileKey()).getContent(),
+                            null,
+                            options);
+                } catch (MalformedURLException url_e){
+                    Log.e("PHOTO_URL_ERROR", url_e.getMessage());
+                    continue;
+                } catch (IOException io_e){
+                    Log.e("PHOTO_URL_ERROR", io_e.getMessage());
+                    continue;
+                }
                 Log.d("DEBUG", "GOT A PHOTO!!!!!!");
                 listlayout.addView(feed.getActivity().getLayoutInflater().inflate(R.layout.feeditem, feed.getViewgroup(), false), childIndex);
                 View feedItem = listlayout.getChildAt(childIndex);
