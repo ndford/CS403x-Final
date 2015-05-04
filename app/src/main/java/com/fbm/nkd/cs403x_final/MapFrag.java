@@ -4,6 +4,7 @@ package com.fbm.nkd.cs403x_final;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class MapFrag extends Fragment {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,
                 longitude), 16.0f));
     }
-
+/*
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -90,6 +91,14 @@ public class MapFrag extends Fragment {
         }
     }
 
+
+*/
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
     /**** The mapfragment's id must be removed from the FragmentManager
      **** or else if the same it is passed on the next time then
      **** app will crash ****/
@@ -97,11 +106,11 @@ public class MapFrag extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-
-        if (mMap != null) {
-            MainActivity.fragmentManager.beginTransaction()
-                    .remove(getChildFragmentManager().findFragmentById(R.id.location_map)).commit();
-            mMap = null;
+    //    Log.d("OnDestroyView", "OnDestroyView Called");
+      if (mMap != null) {
+          getChildFragmentManager().beginTransaction()
+                   .remove(getChildFragmentManager().findFragmentById(R.id.location_map)).commitAllowingStateLoss();
+          mMap = null;
         }
 
     }
