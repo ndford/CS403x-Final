@@ -62,8 +62,8 @@ public class MainActivity extends FragmentActivity {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new SectionsPagerAdapter(fragmentManager);
+
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

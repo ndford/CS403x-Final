@@ -48,7 +48,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //new GetNearbyPhotosTask(this).execute(getMyLocation());
+        populateFeed();
     }
 
     public void populateFeed(){

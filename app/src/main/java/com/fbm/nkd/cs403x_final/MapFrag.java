@@ -112,7 +112,7 @@ public class MapFrag extends Fragment {
         // For showing a move to my loction button
         mMap.setMyLocationEnabled(true);
         // For zooming automatically to the Dropped PIN Location
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,
                 longitude), 16.0f));
 
 

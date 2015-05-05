@@ -12,7 +12,7 @@ import android.util.SparseArray;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Camera", "Feed", "Map" };
+    private String tabTitles[] = new String[] { "Feed", "Camera", "Map" };
 
     static CameraFragment cameraFragment;
     static FeedFragment feedFragment;
@@ -23,7 +23,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         cameraFragment = new CameraFragment();
         feedFragment = new FeedFragment();
         mapFragment = new MapFrag();
+    }
 
+    /**
+     * Used to update map fragment once new photos are loaded
+     */
+    public void refreshMapFrag(){
+        mapFragment = new MapFrag();
     }
 
     @Override
@@ -37,11 +43,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                fragment = cameraFragment;
+                fragment = feedFragment;
                 break;
 
             case 1:
-                fragment = feedFragment;
+                fragment = cameraFragment;
                 break;
 
             case 2:

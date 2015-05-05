@@ -71,9 +71,9 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
     @Override
     protected void onPostExecute(List<GeoPhoto> geoPhotos) {
         mainActivity.setPhotoList(geoPhotos);
-        FeedFragment feedFrag = (FeedFragment) mainActivity.getAdapter().getItem(1);
+        FeedFragment feedFrag = (FeedFragment) mainActivity.getAdapter().getItem(0);
         MapFrag mapFrag = (MapFrag) mainActivity.getAdapter().getItem(2);
         feedFrag.populateFeed();
-        mapFrag.setUpMapIfNeeded();
+        mainActivity.getAdapter().refreshMapFrag();
     }
 }
