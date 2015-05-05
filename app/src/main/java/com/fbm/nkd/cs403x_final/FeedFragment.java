@@ -1,6 +1,7 @@
 package com.fbm.nkd.cs403x_final;
 
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Criteria;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 
 import com.davidmihal.geoimagestore.GeoPhoto;
 
+import java.util.List;
+
 /**
  * Created by Nate on 4/29/15.
  */
@@ -31,7 +34,6 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     // Inflate the fragment layout we defined above for this fragment
@@ -46,7 +48,27 @@ public class FeedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new GetNearbyPhotosTask(this).execute(getMyLocation());
+        //new GetNearbyPhotosTask(this).execute(getMyLocation());
+    }
+
+    public void populateFeed(){
+        List<GeoPhoto> geoPhotos = ((MainActivity) getActivity()).getPhotoList();
+        if (geoPhotos != null) {
+            int childIndex = 0;
+            LinearLayout listlayout = (LinearLayout) getView().findViewById(R.id.feedListLayout);
+            for (GeoPhoto geophoto : geoPhotos) {
+                listlayout.addView(getActivity().getLayoutInflater().inflate(R.layout.feeditem, viewgroup, false), childIndex);
+                View feedItem = listlayout.getChildAt(childIndex);
+                ImageView itemImage = (ImageView) feedItem.findViewById(R.id.feedItemImage);
+                itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                itemImage.setImageBitmap(geophoto.getImage());
+                ((TextView) feedItem.findViewById(R.id.imageTextView)).setText(geophoto.getName());
+                double distance = geophoto.getDistance(((MainActivity) getActivity()).getMyLocation());
+                ((TextView) feedItem.findViewById(R.id.distanceTextView)).setText(String.format("%.2f mi", distance));
+
+                childIndex++;
+            }
+        }
     }
 
     public ViewGroup getViewgroup(){

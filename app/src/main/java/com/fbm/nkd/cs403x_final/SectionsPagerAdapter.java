@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
@@ -22,6 +23,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         cameraFragment = new CameraFragment();
         feedFragment = new FeedFragment();
         mapFragment = new MapFrag();
+
     }
 
     @Override

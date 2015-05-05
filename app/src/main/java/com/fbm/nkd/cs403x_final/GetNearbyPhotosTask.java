@@ -1,5 +1,7 @@
 package com.fbm.nkd.cs403x_final;
 
+
+import android.support.v4.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -24,12 +26,12 @@ import java.util.List;
  */
 public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto>> {
 
-    FeedFragment feed;
+   MainActivity mainActivity;
     String IMG_URL = "http://geoimagestore.appspot.com/serve/?blobKey=";
     private Location myLocation;
 
-    public GetNearbyPhotosTask(FeedFragment feedFragment) {
-        feed = feedFragment;
+    public GetNearbyPhotosTask(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -58,29 +60,20 @@ public class GetNearbyPhotosTask extends AsyncTask<Location, Void, List<GeoPhoto
                 }
                 geoPhoto.setImage(bitmapPhoto);
             }
+
             return photos;
         } else {
             return null;
         }
+
     }
 
     @Override
     protected void onPostExecute(List<GeoPhoto> geoPhotos) {
-        if (geoPhotos != null) {
-            int childIndex = 0;
-            LinearLayout listlayout = (LinearLayout) feed.getView().findViewById(R.id.feedListLayout);
-            for (GeoPhoto geophoto : geoPhotos) {
-                listlayout.addView(feed.getActivity().getLayoutInflater().inflate(R.layout.feeditem, feed.getViewgroup(), false), childIndex);
-                View feedItem = listlayout.getChildAt(childIndex);
-                ImageView itemImage = (ImageView) feedItem.findViewById(R.id.feedItemImage);
-                itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                itemImage.setImageBitmap(geophoto.getImage());
-                ((TextView) feedItem.findViewById(R.id.imageTextView)).setText(geophoto.getName());
-                double distance = geophoto.getDistance(myLocation);
-                ((TextView) feedItem.findViewById(R.id.distanceTextView)).setText(String.format("%.2f mi",distance));
-
-                childIndex++;
-            }
-        }
+        mainActivity.setPhotoList(geoPhotos);
+        FeedFragment feedFrag = (FeedFragment) mainActivity.getAdapter().getItem(1);
+        MapFrag mapFrag = (MapFrag) mainActivity.getAdapter().getItem(2);
+        feedFrag.populateFeed();
+        mapFrag.setUpMapIfNeeded();
     }
 }

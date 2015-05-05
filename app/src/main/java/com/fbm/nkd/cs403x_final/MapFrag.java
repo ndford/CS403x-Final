@@ -62,8 +62,6 @@ public class MapFrag extends Fragment {
         latitude = 42.274681;
         longitude = -71.808833;
 
-        setUpMapIfNeeded(); // For setting up the MapFragment
-
         return view;
     }
 
@@ -79,33 +77,17 @@ public class MapFrag extends Fragment {
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
-                GeoImageStore imageStore = GeoImageStore.getInstance();
-                List<GeoPhoto> photos = imageStore.getNearbyPhotos(getMyLocation());
+                List<GeoPhoto> photos = ((MainActivity) getActivity()).getPhotoList();//imageStore.getNearbyPhotos(getMyLocation());
 
                 if (photos != null) {
 
                     for (GeoPhoto geophoto : photos) {
-                        Bitmap bitmapPhoto = null;
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 2;
-                        try {
-                            bitmapPhoto = BitmapFactory.decodeStream(
-                                    (InputStream) new URL("http://geoimagestore.appspot.com/serve/?blobKey=" + geophoto.getFileKey()).getContent(),
-                                    null,
-                                    options);
-                        } catch (MalformedURLException url_e) {
-                            Log.e("PHOTO_URL_ERROR", url_e.getMessage());
-                            continue;
-                        } catch (IOException io_e) {
-                            Log.e("PHOTO_URL_ERROR", io_e.getMessage());
-                            continue;
-                        }
 
                         double latitude = geophoto.getLatitude();
                         double longitude = geophoto.getLongitude();
                         LatLng latLng = new LatLng(latitude, longitude);
 
-                        Bitmap icon = Bitmap.createScaledBitmap(bitmapPhoto, 200, 200, false);
+                        Bitmap icon = Bitmap.createScaledBitmap(geophoto.getImage(), 200, 200, false);
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title(geophoto.getName())
@@ -160,7 +142,7 @@ public class MapFrag extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
+        setUpMapIfNeeded(); // For setting up the MapFragment
 
 
     }
